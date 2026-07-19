@@ -15,6 +15,7 @@ from backend.api.routes.summarizer import router as summarizer_router
 from backend.config import settings
 from backend.utils.logger import configure_logging, get_logger
 from backend.core.exception_handlers import register_exception_handlers
+from backend.api.routes.classifier import router as classifier_router
 
 configure_logging()
 logger = get_logger(__name__)
@@ -47,6 +48,11 @@ app.include_router(
 
 app.include_router(
     summarizer_router,
+    prefix=settings.API_PREFIX,
+)
+
+app.include_router(
+    classifier_router,
     prefix=settings.API_PREFIX,
 )
 
