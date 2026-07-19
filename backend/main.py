@@ -11,6 +11,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
 from backend.api.routes.extractor import router as extractor_router
+from backend.api.routes.summarizer import router as summarizer_router
 from backend.config import settings
 from backend.utils.logger import configure_logging, get_logger
 from backend.core.exception_handlers import register_exception_handlers
@@ -41,6 +42,11 @@ app = FastAPI(
 
 app.include_router(
     extractor_router,
+    prefix=settings.API_PREFIX,
+)
+
+app.include_router(
+    summarizer_router,
     prefix=settings.API_PREFIX,
 )
 

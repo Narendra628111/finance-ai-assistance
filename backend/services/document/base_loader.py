@@ -57,7 +57,7 @@ class BaseDocumentLoader(ABC):
             )
 
     @abstractmethod
-    async def load(self) -> str
+    async def load(self) -> str:
         """
         Extract text from the document.
 

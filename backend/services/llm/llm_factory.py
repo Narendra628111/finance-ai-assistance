@@ -5,7 +5,7 @@ Factory for creating LLM service instances.
 from __future__ import annotations
 
 from backend.config import settings
-from backend.core.exceptions import ConfigurationError
+from backend.core.exception import ConfigurationError
 from backend.services.llm.base_llm import BaseLLM
 from backend.services.llm.gemini_service import GeminiService
 

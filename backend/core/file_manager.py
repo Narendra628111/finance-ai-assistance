@@ -12,7 +12,7 @@ from pathlib import Path
 from fastapi import UploadFile
 
 from backend.config import settings
-from backend.core.exceptions import (
+from backend.core.exception import (
     FileTooLargeError,
     UnsupportedFileTypeError,
 )

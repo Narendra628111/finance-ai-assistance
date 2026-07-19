@@ -12,10 +12,9 @@ from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR.parent / "data"
 
-LLM_PROVIDER: str = "gemini"
 class Settings(BaseSettings):
     """Application settings."""
 
@@ -49,14 +48,20 @@ class Settings(BaseSettings):
     API_PREFIX: str = "/api/v1"
 
     # ==========================================================================
+    # LLM
+    # ==========================================================================
+
+    LLM_PROVIDER: str = "gemini"
+
+    # ==========================================================================
     # Gemini
     # ==========================================================================
 
     GEMINI_API_KEY: str = Field(..., min_length=1)
-    GEMINI_MODEL: str = "gemini-2.5-flash"
+    GEMINI_MODEL: str = "gemini-3-flash-preview"
+
     GEMINI_TEMPERATURE: float = Field(default=0.2, ge=0.0, le=2.0)
     GEMINI_MAX_OUTPUT_TOKENS: int = Field(default=8192, gt=0)
-
     # ==========================================================================
     # File Uploads
     # ==========================================================================
@@ -114,6 +119,7 @@ def get_settings() -> Settings:
     Return a cached Settings instance.
     """
     return Settings()
+
 
 
 settings = get_settings()
