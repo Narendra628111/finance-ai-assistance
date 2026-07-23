@@ -73,7 +73,33 @@ class BaseLLM(ABC):
             Generated text response.
         """
         raise NotImplementedError
+    
+    @abstractmethod
+    async def embed_text(
+        self,
+        text: str,
+    ) -> list[float]:
+        """
+        Generate an embedding vector for a text.
 
+        Args:
+            text: Input text.
+
+        Returns:
+            Embedding vector.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    async def embed_documents(
+        self,
+        texts: list[str],
+    ) -> list[list[float]]:
+        """
+        Generate embeddings for multiple texts.
+        """
+        raise NotImplementedError
+    
     @abstractmethod
     async def health_check(self) -> bool:
         """

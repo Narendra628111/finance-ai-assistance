@@ -17,6 +17,7 @@ from backend.utils.logger import configure_logging, get_logger
 from backend.core.exception_handlers import register_exception_handlers
 from backend.api.routes.classifier import router as classifier_router
 from backend.api.routes.vision import router as vision_router
+from backend.api.rag import router as rag_router
 
 configure_logging()
 logger = get_logger(__name__)
@@ -61,6 +62,8 @@ app.include_router(
     vision_router,
     prefix="/api/v1",
 )
+
+app.include_router(rag_router)
 
 @app.get(
     "/",

@@ -79,6 +79,26 @@ class Settings(BaseSettings):
     }
 
     # ==========================================================================
+    # RAG Configuration
+    # ==========================================================================
+
+    POLICIES_DIR: Path = DATA_DIR / "policies"
+
+    QDRANT_COLLECTION_NAME: str = "finance_knowledge"
+
+    EMBEDDING_MODEL: str = "gemini-embedding-001"
+
+    CHUNK_SIZE: int = 1000
+
+    CHUNK_OVERLAP: int = 200
+
+    TOP_K_RESULTS: int = 5
+
+    QDRANT_PATH: Path = DATA_DIR / "vector_store"
+
+    VECTOR_SIZE: int = 3072
+
+    # ==========================================================================
     # Logging
     # ==========================================================================
 
@@ -104,6 +124,7 @@ class Settings(BaseSettings):
         "LOG_DIR",
         "VECTOR_DB_DIR",
         "CACHE_DIR",
+        "POLICIES_DIR",
         mode="after",
     )
     @classmethod
