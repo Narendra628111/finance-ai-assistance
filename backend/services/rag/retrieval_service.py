@@ -36,18 +36,5 @@ class RetrievalService:
             embedding=embedding,
             limit=settings.TOP_K_RESULTS,
         )
-
-        documents = []
-
-        for result in results:
-
-            documents.append(
-                {
-                    "content": result.payload["content"],
-                    "source": result.payload["source"],
-                    "page": result.payload["page"],
-                    "score": result.score,
-                }
-            )
-
-        return documents
+        return results
+        

@@ -141,57 +141,7 @@ class GeminiService(BaseLLM):
         except Exception:
             logger.exception("Gemini image generation failed.")
             raise
-    async def embed_text(
-        self,
-        text: str,
-    ) -> list[float]:
-        """
-        Generate an embedding for a single text.
-        """
-        print("Embedding model:", settings.EMBEDDING_MODEL)
-        
-        try:
-            response = self.client.models.embed_content(
-                model=settings.EMBEDDING_MODEL,
-                contents=text,
-            )
-
-            return response.embeddings[0].values
-
-        except Exception:
-            logger.exception("Gemini embedding generation failed.")
-            raise
-
-    async def embed_documents(
-        self,
-        texts: list[str],
-    ) -> list[list[float]]:
-
-        BATCH_SIZE = 100
-        all_embeddings = []
-
-        for i in range(0, len(texts), BATCH_SIZE):
-            batch = texts[i:i + BATCH_SIZE]
-
-            response = self.client.models.embed_content(
-                model=settings.EMBEDDING_MODEL,
-                contents=batch,
-            )
-
-            batch_embeddings = [
-                embedding.values
-                for embedding in response.embeddings
-            ]
-
-            all_embeddings.extend(batch_embeddings)
-
-            logger.info(
-                "Embedded %d/%d chunks",
-                min(i + len(batch), len(texts)),
-                len(texts),
-            )
-
-        return all_embeddings
+   
 
         
     async def health_check(self) -> bool:

@@ -4,9 +4,10 @@ RAG orchestration service.
 
 from __future__ import annotations
 
-from backend.services.rag.retrieval_service import RetrievalService
+from backend.prompts.rag_prompt import RAG_PROMPT
 from backend.services.llm.base_llm import BaseLLM
 from backend.services.rag.indexing_service import IndexingService
+from backend.services.rag.retrieval_service import RetrievalService
 
 
 class RAGService:
@@ -62,35 +63,35 @@ class RAGService:
             for doc in documents
         )
 
-        prompt = f"""
-You are a finance AI assistant.
-
-Answer ONLY using the provided context.
-
-If the answer is not available in the context,
-respond with:
-
-"I couldn't find that information in the provided documents."
-
-Context:
-{context}
-
-Question:
-{question}
-
-Answer:
-"""
+        prompt = RAG_PROMPT.format(
+            context=context,
+            question=question,
+        )
 
         answer = await self.llm.generate(prompt)
 
+        # Remove duplicate source entries
+        unique_sources = []
+        seen = set()
+
+        for doc in documents:
+            key = (
+                doc["source"],
+                doc["page"],
+            )
+
+            if key not in seen:
+                seen.add(key)
+
+                unique_sources.append(
+                    {
+                        "document": doc["source"],
+                        "page": doc["page"],
+                        "score": round(doc["score"], 4),
+                    }
+                )
+
         return {
             "answer": answer,
-            "sources": [
-                {
-                    "document": doc["source"],
-                    "page": doc["page"],
-                    "score": round(doc["score"], 4),
-                }
-                for doc in documents
-            ],
+            "sources": unique_sources,
         }

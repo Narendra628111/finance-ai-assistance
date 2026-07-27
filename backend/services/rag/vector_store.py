@@ -78,16 +78,36 @@ class VectorStore:
         self,
         embedding: list[float],
         limit: int = 5,
-    ) -> list[Any]:
+    ) -> list[dict]:
         """
         Search similar vectors.
         """
 
-        return self.client.search(
+        response = self.client.query_points(
             collection_name=self.collection,
-            query_vector=embedding,
+            query=embedding,
             limit=limit,
+            with_payload=True,
         )
+
+
+    
+
+        documents = []
+
+        for point in response.points:
+            documents.append(
+                {
+                    "content": point.payload["content"],
+                    "source": point.payload["source"],
+                    "page": point.payload["page"],
+                    "score": point.score,
+                }
+            )
+
+        return documents
+
+    
     
     def recreate_collection(self) -> None:
         """

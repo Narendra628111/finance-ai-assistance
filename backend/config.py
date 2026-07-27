@@ -96,7 +96,9 @@ class Settings(BaseSettings):
 
     QDRANT_PATH: Path = DATA_DIR / "vector_store"
 
-    VECTOR_SIZE: int = 3072
+    VECTOR_SIZE: int = 384
+
+    SIMILARITY_THRESHOLD: float = 0.7
 
     # ==========================================================================
     # Logging
@@ -125,6 +127,7 @@ class Settings(BaseSettings):
         "VECTOR_DB_DIR",
         "CACHE_DIR",
         "POLICIES_DIR",
+        "QDRANT_PATH",
         mode="after",
     )
     @classmethod
