@@ -77,7 +77,7 @@ class VectorStore:
     def search(
         self,
         embedding: list[float],
-        limit: int = 5,
+        limit: int = 10,
     ) -> list[dict]:
         """
         Search similar vectors.

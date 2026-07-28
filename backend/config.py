@@ -98,7 +98,7 @@ class Settings(BaseSettings):
 
     VECTOR_SIZE: int = 384
 
-    SIMILARITY_THRESHOLD: float = 0.7
+    SIMILARITY_THRESHOLD: float = 0.55
 
     # ==========================================================================
     # Logging

@@ -34,6 +34,7 @@ class QueryRequest(BaseModel):
     question: str = Field(
         ...,
         min_length=1,
+        description="User question.",
     )
 
 
@@ -53,4 +54,16 @@ class QueryResponse(BaseModel):
     """
 
     answer: str
-    sources: list[SourceDocument]
+
+    answer_type: str = Field(
+        ...,
+        description=(
+            "Type of answer returned. "
+            "Possible values: grounded, general, not_found."
+        ),
+    )
+
+    sources: list[SourceDocument] = Field(
+        default_factory=list,
+        description="Documents used to generate the answer.",
+    )
