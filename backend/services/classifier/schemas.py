@@ -5,28 +5,24 @@ Schemas for the Classifier Service.
 from pydantic import BaseModel, Field
 
 
-class Category(BaseModel):
-    """
-    Represents a single classification category.
-    """
-
-    label: str = Field(
-        ...,
-        description="Category name.",
-    )
-
-    items: list[str] = Field(
-        default_factory=list,
-        description="Entities belonging to this category.",
-    )
-
-
 class ClassificationResponse(BaseModel):
     """
-    Structured response returned by the classifier.
+    Structured response returned by the Classifier Agent.
     """
 
-    categories: list[Category] = Field(
-        default_factory=list,
-        description="List of classified categories.",
+    document_type: str = Field(
+        ...,
+        description="Detected document type.",
+    )
+
+    intent: str = Field(
+        ...,
+        description="Predicted user/document intent.",
+    )
+
+    confidence: float = Field(
+        ...,
+        ge=0.0,
+        le=1.0,
+        description="Confidence score between 0 and 1.",
     )

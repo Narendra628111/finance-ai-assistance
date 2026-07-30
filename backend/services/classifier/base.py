@@ -11,15 +11,13 @@ class BaseClassifier(ABC):
     @abstractmethod
     async def classify(
         self,
-        summary: str,
-        entities: list[str],
+        text: str,
     ) -> ClassificationResponse:
         """
-        Classify extracted entities.
+        Classify the given text.
 
         Args:
-            summary: Document summary.
-            entities: Extracted entities.
+            text: Input text to classify.
 
         Returns:
             ClassificationResponse

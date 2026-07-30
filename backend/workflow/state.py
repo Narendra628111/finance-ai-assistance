@@ -1,23 +1,34 @@
-from typing import Optional
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+
 from typing_extensions import TypedDict
 
+from backend.services.classifier.schemas import ClassificationResponse
 
-class AssistantState(TypedDict):
-    """
-    Shared state passed between LangGraph nodes.
-    """
 
-    # User Input
-    input_type: str               # text | image | pdf
+class AssistantState(TypedDict, total=False):
+
+    # Input
+    input_type: str
     user_query: str
-    file_path: Optional[str]
+    file_path: Path |None
 
-    # Agent Outputs
+    # Processing
     extracted_text: str
     vision_result: str
-    classification: str
-    summary: str
-    rag_context: str
 
-    # Final Response
+    summary: str
+    key_points: list[str]
+
+    # Classification
+    classification: str
+    classification_confidence: float
+
+    # RAG
+    rag_answer: str
+    rag_sources: list[dict]
+
+    # Final
     final_answer: str

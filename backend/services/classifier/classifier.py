@@ -20,29 +20,30 @@ class ClassifierService(BaseClassifier):
     def __init__(
         self,
         llm: BaseLLM | None = None,
-    ):
+    ) -> None:
         self._llm = llm or LLMFactory.create()
 
     async def classify(
         self,
-        summary: str,
-        entities: list[str],
+        text: str,
     ) -> ClassificationResponse:
+        """
+        Classify the given text.
+        """
 
-        if not summary.strip() and not entities:
+        if not text.strip():
             raise ClassificationError(
-                "Summary or entities must be provided."
+                "Input text cannot be empty."
             )
 
         prompt = build_classifier_prompt(
-            summary=summary,
-            entities=entities,
+            text=text,
         )
 
         try:
             data = await self._llm.generate_json(
                 prompt=prompt,
-                temperature=0.2,
+                temperature=0.0,
             )
 
         except Exception as exc:
@@ -51,7 +52,9 @@ class ClassifierService(BaseClassifier):
             ) from exc
 
         try:
-            return ClassificationResponse.model_validate(data)
+            return ClassificationResponse.model_validate(
+                data,
+            )
 
         except ValidationError as exc:
             raise InvalidClassificationError(
