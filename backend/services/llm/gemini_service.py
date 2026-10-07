@@ -99,49 +99,7 @@ class GeminiService(BaseLLM):
             logger.exception("Gemini JSON generation failed.")
             raise
 
-    async def generate_from_image(
-        self,
-        image_bytes: bytes,
-        prompt: str,
-        mime_type: str,
-        **kwargs: Any,
-    ) -> str:
-        """
-        Generate response from an image.
-        """
-
-        config = types.GenerateContentConfig(
-            temperature=kwargs.get("temperature", self.temperature),
-            max_output_tokens=kwargs.get(
-                "max_output_tokens",
-                self.max_output_tokens,
-            ),
-        )
-
-        image_part = types.Part.from_bytes(
-            data=image_bytes,
-            mime_type=mime_type,
-        )
-
-        try:
-            response = self.client.models.generate_content(
-                model=kwargs.get("model", self.model),
-                contents=[
-                    image_part,
-                    prompt,
-                ],
-                config=config,
-            )
-
-            if response.text is None:
-                raise ValueError("Empty image response from Gemini.")
-
-            return response.text.strip()
-
-        except Exception:
-            logger.exception("Gemini image generation failed.")
-            raise
-   
+    
 
         
     async def health_check(self) -> bool:

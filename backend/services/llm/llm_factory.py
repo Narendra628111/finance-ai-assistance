@@ -1,59 +1,22 @@
-"""
-Factory for creating LLM service instances.
-"""
-
-from __future__ import annotations
-
 from backend.config import settings
-from backend.core.exception import ConfigurationError
 from backend.services.llm.base_llm import BaseLLM
 from backend.services.llm.gemini_service import GeminiService
+from backend.services.llm.groq_service import GroqService
 
 
 class LLMFactory:
-    """Factory class for creating LLM service instances."""
 
-    _providers: dict[str, type[BaseLLM]] = {
-        "gemini": GeminiService,
-    }
+    @staticmethod
+    def create() -> BaseLLM:
 
-    @classmethod
-    def register(
-        cls,
-        name: str,
-        provider: type[BaseLLM],
-    ) -> None:
-        """
-        Register a new LLM provider.
-        """
-        cls._providers[name.lower()] = provider
+        provider = settings.LLM_PROVIDER.lower()
 
-    @classmethod
-    def create(
-        cls,
-        provider: str | None = None,
-    ) -> BaseLLM:
-        """
-        Create an LLM service instance.
+        if provider == "groq":
+            return GroqService()
 
-        Args:
-            provider: Optional provider name.
-                      If omitted, the value from settings is used.
+        if provider == "gemini":
+            return GeminiService()
 
-        Returns:
-            BaseLLM implementation.
-        """
-
-        provider_name = (
-            provider or settings.LLM_PROVIDER
-        ).lower()
-
-        if provider_name not in cls._providers:
-            available = ", ".join(cls._providers.keys())
-
-            raise ConfigurationError(
-                f"Unsupported LLM provider '{provider_name}'. "
-                f"Available providers: {available}"
-            )
-
-        return cls._providers[provider_name]()
+        raise ValueError(
+            f"Unsupported LLM provider: {provider}"
+        )

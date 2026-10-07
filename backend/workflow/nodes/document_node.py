@@ -16,9 +16,6 @@ logger = get_logger(__name__)
 async def document_node(
     state: AssistantState,
 ) -> AssistantState:
-    """
-    Load document and extract text.
-    """
 
     logger.info("Executing Document Node")
 
@@ -30,6 +27,9 @@ async def document_node(
 
     state["extracted_text"] = text
 
-    logger.info("Document Node completed")
+    logger.info(
+        "Extracted %d characters",
+        len(text),
+    )
 
     return state

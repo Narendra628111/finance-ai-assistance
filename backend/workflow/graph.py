@@ -17,26 +17,42 @@ from backend.workflow.router import (
 )
 
 from backend.workflow.nodes.document_node import document_node
-from backend.workflow.nodes.vision_node import vision_node
 from backend.workflow.nodes.summarizer_node import summarizer_node
 from backend.workflow.nodes.classifier_node import classifier_node
 from backend.workflow.nodes.rag_node import rag_node
 
+
 builder = StateGraph(AssistantState)
 
-# ----------------------------
-# Register Nodes
-# ----------------------------
 
-builder.add_node("document", document_node)
-builder.add_node("vision", vision_node)
-builder.add_node("summarizer", summarizer_node)
-builder.add_node("classifier", classifier_node)
-builder.add_node("rag", rag_node)
+# ---------------------------------------------------------
+# Nodes
+# ---------------------------------------------------------
 
-# ----------------------------
+builder.add_node(
+    "document",
+    document_node,
+)
+
+builder.add_node(
+    "summarizer",
+    summarizer_node,
+)
+
+builder.add_node(
+    "classifier",
+    classifier_node,
+)
+
+builder.add_node(
+    "rag",
+    rag_node,
+)
+
+
+# ---------------------------------------------------------
 # Entry
-# ----------------------------
+# ---------------------------------------------------------
 
 builder.add_conditional_edges(
     START,
@@ -44,13 +60,13 @@ builder.add_conditional_edges(
     {
         "text": "classifier",
         "document": "document",
-        "image": "vision",
     },
 )
 
-# ----------------------------
-# Document Flow
-# ----------------------------
+
+# ---------------------------------------------------------
+# Document flow
+# ---------------------------------------------------------
 
 builder.add_edge(
     "document",
@@ -62,31 +78,28 @@ builder.add_edge(
     "classifier",
 )
 
-# ----------------------------
-# Image Flow
-# ----------------------------
 
-builder.add_edge(
-    "vision",
-    "classifier",
-)
-
-# ----------------------------
-# Intent Routing
-# ----------------------------
+# ---------------------------------------------------------
+# Classifier → RAG
+# ---------------------------------------------------------
 
 builder.add_conditional_edges(
     "classifier",
     route_after_classifier,
     {
         "rag": "rag",
-        "end": END,
     },
 )
+
+
+# ---------------------------------------------------------
+# RAG → END
+# ---------------------------------------------------------
 
 builder.add_edge(
     "rag",
     END,
 )
+
 
 graph = builder.compile()

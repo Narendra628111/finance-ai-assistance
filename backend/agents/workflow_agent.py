@@ -6,9 +6,11 @@ Executes the LangGraph workflow.
 
 from __future__ import annotations
 
+from pprint import pprint
+
 from backend.workflow.graph import graph
 from backend.workflow.state import AssistantState
-from pprint import pprint
+
 
 class WorkflowAgent:
     """
@@ -20,11 +22,9 @@ class WorkflowAgent:
         self,
         state: AssistantState,
     ) -> AssistantState:
-        """
-        Execute the workflow.
-        """
 
-        return await graph.ainvoke(state)
+        result = await graph.ainvoke(state)
+
         print("\n" + "=" * 80)
         print("FINAL WORKFLOW STATE")
         pprint(result)

@@ -52,27 +52,7 @@ class BaseLLM(ABC):
         """
         raise NotImplementedError
 
-    @abstractmethod
-    async def generate_from_image(
-        self,
-        image_bytes: bytes,
-        prompt: str,
-        mime_type: str,
-        **kwargs: Any,
-    ) -> str:
-        """
-        Generate a response using an image and prompt.
-
-        Args:
-            image_bytes: Image content as bytes.
-            prompt: User prompt.
-            mime_type: Image MIME type.
-            **kwargs: Provider-specific parameters.
-
-        Returns:
-            Generated text response.
-        """
-        raise NotImplementedError
+    
     
     
     @abstractmethod

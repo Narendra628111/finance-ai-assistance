@@ -23,7 +23,7 @@ from backend.models.extraction_models import (
 from backend.prompts.extraction_prompt import ExtractionPrompt
 from backend.services.document.loader_factory import LoaderFactory
 from backend.services.extraction.response_parser import ResponseParser
-from backend.services.llm.gemini_service import GeminiService
+from backend.services.llm.llm_factory import LLMFactory
 from backend.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -38,7 +38,7 @@ class ExtractorAgent:
         self,
         llm: GeminiService | None = None,
     ) -> None:
-        self.llm = llm or GeminiService()
+        self.llm = llm or LLMFactory.create()
 
     async def extract(
         self,
